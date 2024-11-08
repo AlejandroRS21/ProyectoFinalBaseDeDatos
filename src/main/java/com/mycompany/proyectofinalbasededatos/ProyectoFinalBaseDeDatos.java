@@ -4,10 +4,7 @@
 
 package com.mycompany.proyectofinalbasededatos;
 
-/**
- *
- * @author arami
- */
+
 public class ProyectoFinalBaseDeDatos {
 
     public static void main(String[] args) {
