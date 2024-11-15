@@ -35,7 +35,6 @@ public class ProyectoFinalBaseDeDatos {
             sc.nextLine();
             switch (opcion) {
                 case 1:
-                    break;
                 case 2:
                 case 3:
                 case 4:
