@@ -7,9 +7,7 @@ public class Alumno implements Serializable {
     private static final Scanner sc = new Scanner(System.in);
 
     private String dni;
-    private String nombreCompleto;
-    private String fechaNac;
-    private String direccion;
+    private String nombreCompleto ,fechaNac,direccion;
 
 
     // Constructor
@@ -19,6 +17,8 @@ public class Alumno implements Serializable {
         this.fechaNac = fechaNac;
         this.direccion = direccion;
     }
+
+
 
     // Getter
     public String getDni() {
@@ -46,5 +46,15 @@ public class Alumno implements Serializable {
     }
     public void setDireccion(String direccion) {
         this.direccion = direccion;
+    }
+
+    public static void introducirAlumno(){
+
+    }
+    public static void volcar(){
+
+    }
+    public static void mostrar() {
+
     }
 }

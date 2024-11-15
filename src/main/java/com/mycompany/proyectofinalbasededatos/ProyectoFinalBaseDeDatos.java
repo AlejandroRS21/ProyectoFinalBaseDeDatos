@@ -8,6 +8,7 @@ import java.util.Scanner;
 
 public class ProyectoFinalBaseDeDatos {
     private static final Scanner sc = new Scanner(System.in);
+
     public static void main(String[] args) {
         int opcion;
 
@@ -31,20 +32,37 @@ public class ProyectoFinalBaseDeDatos {
                 sc.next(); // Limpiar la entrada incorrecta
             }
 
+            ConexionBD.Conexion();
             opcion = sc.nextInt();
             sc.nextLine();
             switch (opcion) {
                 case 1:
+                    Alumno.introducirAlumno();
+                    break;
                 case 2:
+                    Matricula.introducirMatricula();
+                    break;
                 case 3:
+                    Asignatura.introducirAsignatura();
+                    break;
                 case 4:
+                    Alumno.mostrar();
+                    break;
                 case 5:
+                    Alumno.volcar();
+                    break;
                 case 6:
+                    Borrar();
+                    break;
                 case 7:
+                    break;
                 default:
                     System.out.print("Numero incorrecto vuelva a escribir uno");
             }
         } while (opcion != 7);
         sc.close();
+    }
+
+    private static void Borrar() {
     }
 }

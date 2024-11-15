@@ -6,9 +6,8 @@ import java.util.Scanner;
 public class Matricula implements Serializable {
     private static final Scanner sc = new Scanner(System.in);
 
-    private int codMatricula;
+    private int codMatricula,codAsignatura;
     private String dni;
-    private int codAsignatura;
 
     // Constructor
     public Matricula(int codMatric, String dni, int codAsig){
@@ -36,5 +35,14 @@ public class Matricula implements Serializable {
     public void setCodAsignatura(int codAsignatura) {
         this.codAsignatura = codAsignatura;
     }
+
+    public static void introducirMatricula(){
+
+    }
+    public static boolean existeMatricula(){
+
+        return false;
+    }
+
 
 }

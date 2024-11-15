@@ -14,17 +14,22 @@ public class Asignatura implements Serializable {
         this.codAsignatura = codAsig;
         this.nombreAsignatura = nombreAsig;
     }
-    // Getters and Setters
+    // Getters
     public int getCodAsignatura() {
         return codAsignatura;
     }
     public String getNombreAsignatura() {
         return nombreAsignatura;
     }
+    //Setters
     public void setCodAsignatura(int codAsignatura) {
         this.codAsignatura = codAsignatura;
     }
     public void setNombreAsignatura(String nombreAsignatura) {
         this.nombreAsignatura = nombreAsignatura;
+    }
+
+    public static void introducirAsignatura(){
+
     }
 }
