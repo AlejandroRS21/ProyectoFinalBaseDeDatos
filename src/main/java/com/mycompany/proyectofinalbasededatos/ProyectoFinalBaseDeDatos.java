@@ -4,12 +4,13 @@
 
 package com.mycompany.proyectofinalbasededatos;
 
+import java.sql.SQLException;
 import java.util.Scanner;
 
 public class ProyectoFinalBaseDeDatos {
     private static final Scanner sc = new Scanner(System.in);
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException, ClassNotFoundException {
         int opcion;
 
         do {
@@ -32,7 +33,7 @@ public class ProyectoFinalBaseDeDatos {
                 sc.next(); // Limpiar la entrada incorrecta
             }
 
-            ConexionBD.Conexion();
+            ConexionBD.conectar();
             opcion = sc.nextInt();
             sc.nextLine();
             switch (opcion) {
@@ -61,6 +62,7 @@ public class ProyectoFinalBaseDeDatos {
             }
         } while (opcion != 7);
         sc.close();
+        ConexionBD.desconectar();
     }
 
     private static void Borrar() {
