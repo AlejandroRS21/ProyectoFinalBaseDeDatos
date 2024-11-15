@@ -5,9 +5,9 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.example</groupId>
-  <artifactId>HolaFX</artifactId>
+  <artifactId>ProyectoFinalBaseDeDatos</artifactId>
   <version>1.0-SNAPSHOT</version>
-  <name>HolaFX</name>
+  <name>ProyectoFinalBaseDeDatos</name>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

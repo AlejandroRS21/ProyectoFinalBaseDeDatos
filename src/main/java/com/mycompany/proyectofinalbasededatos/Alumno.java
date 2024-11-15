@@ -1,55 +1,38 @@
 package com.mycompany.proyectofinalbasededatos;
 
 import java.io.Serializable;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.Scanner;
 
+import static com.mycompany.proyectofinalbasededatos.ConexionBD.connection;
+
 public class Alumno implements Serializable {
+
     private static final Scanner sc = new Scanner(System.in);
-
-    private String dni;
-    private String nombreCompleto ,fechaNac,direccion;
-
-
-    // Constructor
-    public Alumno(String dni, String nombreCompleto, String fechaNac, String direccion) {
-        this.dni = dni;
-        this.nombreCompleto = nombreCompleto;
-        this.fechaNac = fechaNac;
-        this.direccion = direccion;
-    }
-
-
-
-    // Getter
-    public String getDni() {
-        return dni;
-    }
-    public String getFechaNac() {
-        return fechaNac;
-    }
-    public String getDireccion() {
-        return direccion;
-    }
-    public String getNombreCompleto() {
-        return nombreCompleto;
-    }
-
-    // Setter
-    public void setDni(String dni) {
-        this.dni = dni;
-    }
-    public void setNombreCompleto(String nombreCompleto) {
-        this.nombreCompleto = nombreCompleto;
-    }
-    public void setFechaNac(String fechaNac) {
-        this.fechaNac = fechaNac;
-    }
-    public void setDireccion(String direccion) {
-        this.direccion = direccion;
-    }
+    private static  String dni,nombre,fechaNac,direccion;
 
     public static void introducirAlumno(){
+        System.out.println("Introduce los datos del alumno a introducir:");
+        System.out.println("DNI:");
+        dni = sc.nextLine();
+        System.out.println("Nombre del Alumno");
+        nombre = sc.nextLine();
+        System.out.println("Fecha de nacimiento:");
+        fechaNac = sc.nextLine();
+        System.out.println("Direccion:");
+        direccion = sc.nextLine();
 
+        String query = "INSERT INTO alumnos (DNI, nombre, fechaNac, direccion) VALUES (?, ?, ?, ?)";
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setString(1, dni);
+            statement.setString(2, nombre);
+            statement.setString(3, fechaNac);
+            statement.setString(4, direccion);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
     public static void volcar(){
 
@@ -57,4 +40,5 @@ public class Alumno implements Serializable {
     public static void mostrar() {
 
     }
+
 }
