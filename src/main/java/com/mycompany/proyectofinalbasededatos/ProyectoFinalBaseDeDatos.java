@@ -8,10 +8,15 @@ package com.mycompany.proyectofinalbasededatos;
 
 
 
+import org.controlsfx.control.tableview2.filter.filtereditor.SouthFilter;
+
+import java.io.File;
+import java.io.FileFilter;
 import java.sql.PreparedStatement;
 
 import java.sql.SQLException;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 
@@ -69,7 +74,7 @@ public class ProyectoFinalBaseDeDatos {
         ConexionBD.desconectar();
     }
 
-    public static void borrar() {
+    public static void borrarBD() {
         String[] tablas = {"MatriculasAsignaturas", "Matriculas", "Alumnos", "Asignaturas"};
         String desactivarRestricciones = "SET FOREIGN_KEY_CHECKS = 0";
         String activarRestricciones = "SET FOREIGN_KEY_CHECKS = 1";
@@ -102,5 +107,31 @@ public class ProyectoFinalBaseDeDatos {
             System.err.println("Error al borrar los datos: " + e.getMessage());
         }
     }
+    public static void borrarTXT(){
+        File f = new File("."); //Directorio actual
+        File[] archivos = f.listFiles((dir, name) -> name.endsWith(".txt"));
 
+        if (archivos != null && archivos.length > 0){
+            for(File archivo : archivos){
+                archivo.delete();
+                System.out.println("Archivo " + archivo.getName() + " borrado.");
+            }
+        }
+    }
+    public static void borrar(){
+        int opcion = 0;
+        System.out.println("¿Que desea borrar?");
+        System.out.println("1. Base de datos");
+        System.out.println("2. Archivos .txt");
+        try{
+            opcion = sc.nextInt();
+        }catch (InputMismatchException e){
+            e.printStackTrace();
+        }
+        switch (opcion){
+            case 1 -> borrarBD();
+            case 2 -> borrarTXT();
+            default -> System.out.println("Opcion no valida");
+        }
+}
 }
