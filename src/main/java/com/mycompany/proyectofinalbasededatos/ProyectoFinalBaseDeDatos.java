@@ -1,26 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- */
-
 package com.mycompany.proyectofinalbasededatos;
 
-
-
-
-
-import org.controlsfx.control.tableview2.filter.filtereditor.SouthFilter;
-
 import java.io.File;
-import java.io.FileFilter;
 import java.sql.PreparedStatement;
-
 import java.sql.SQLException;
-
-import java.util.InputMismatchException;
 import java.util.Scanner;
-
-
-import static com.mycompany.proyectofinalbasededatos.ConexionBD.connection;
 
 public class ProyectoFinalBaseDeDatos {
     private static final Scanner sc = new Scanner(System.in);
@@ -61,7 +44,7 @@ public class ProyectoFinalBaseDeDatos {
                 case 4 -> {
                     System.out.println("Introduce DNI del alumno");
                     dni = sc.nextLine();
-                    datosAlumno =Alumno.mostrarAlumno(dni);
+                    datosAlumno = Alumno.mostrarAlumno(dni);
                     System.out.println(datosAlumno);
                 }
                 case 5 -> Alumno.volcarDatosAlumnos();
@@ -74,64 +57,65 @@ public class ProyectoFinalBaseDeDatos {
         ConexionBD.desconectar();
     }
 
-    public static void borrarBD() {
-        String[] tablas = {"MatriculasAsignaturas", "Matriculas", "Alumnos", "Asignaturas"};
+    public static void borrar() {
+        System.out.println("¿Qué desea borrar?");
+        System.out.println("1. Todos los archivos .txt");
+        System.out.println("2. Vaciar la base de datos");
+        System.out.print("Seleccione una: ");
+
+        int opcion = Integer.parseInt(sc.nextLine().trim());
+
+        switch (opcion) {
+            case 1 -> borrarArchivosTxt();
+            case 2 -> vaciarBaseDeDatos();
+            default -> System.out.println("Opción no válida. No se ha realizado ninguna acción.");
+        }
+    }
+
+    private static void borrarArchivosTxt() {
+        File directorioActual = new File(".");
+        File[] archivos = directorioActual.listFiles((dir, name) -> name.endsWith(".txt"));
+
+        if (archivos != null) {
+            for (File archivo : archivos) {
+                if (archivo.delete()) {
+                    System.out.println("Archivo eliminado: " + archivo.getName());
+                } else {
+                    System.out.println("No se pudo eliminar el archivo: " + archivo.getName());
+                }
+            }
+        } else {
+            System.out.println("No se encontraron archivos .txt para eliminar.");
+        }
+    }
+
+    private static void vaciarBaseDeDatos() {
+        String[] tablas = {"matriculas", "alumnos", "asignaturas"};
         String desactivarRestricciones = "SET FOREIGN_KEY_CHECKS = 0";
         String activarRestricciones = "SET FOREIGN_KEY_CHECKS = 1";
+
         try {
-
-
-            try (PreparedStatement stmDesactivar = connection.prepareStatement(desactivarRestricciones)) {
-                stmDesactivar.executeUpdate();
+            try (PreparedStatement stmtDesactivar = ConexionBD.connection.prepareStatement(desactivarRestricciones)) {
+                stmtDesactivar.executeUpdate();
             }
-
 
             for (String tabla : tablas) {
                 String query = "DELETE FROM " + tabla;
-                try (PreparedStatement stmBorrar = connection.prepareStatement(query)) {
-                    stmBorrar.executeUpdate();
+                try (PreparedStatement stmt = ConexionBD.connection.prepareStatement(query)) {
+                    stmt.executeUpdate();
                     System.out.println("Datos borrados de la tabla: " + tabla);
                 } catch (SQLException e) {
-                    System.err.println("Error al borrar los datos de la tabla " + tabla + ": " + e.getMessage());
+                    System.err.println("Error al borrar datos de la tabla " + tabla + ": " + e.getMessage());
                 }
             }
 
-
-
-            try (PreparedStatement stmActivar = connection.prepareStatement(activarRestricciones)) {
-                stmActivar.executeUpdate();
+            try (PreparedStatement stmtActivar = ConexionBD.connection.prepareStatement(activarRestricciones)) {
+                stmtActivar.executeUpdate();
             }
 
             System.out.println("Todos los datos han sido borrados de la base de datos.");
         } catch (SQLException e) {
-            System.err.println("Error al borrar los datos: " + e.getMessage());
+            System.err.println("Error al vaciar la base de datos: " + e.getMessage());
         }
     }
-    public static void borrarTXT(){
-        File f = new File("."); //Directorio actual
-        File[] archivos = f.listFiles((dir, name) -> name.endsWith(".txt"));
-
-        if (archivos != null && archivos.length > 0){
-            for(File archivo : archivos){
-                archivo.delete();
-                System.out.println("Archivo " + archivo.getName() + " borrado.");
-            }
-        }
-    }
-    public static void borrar(){
-        int opcion = 0;
-        System.out.println("¿Que desea borrar?");
-        System.out.println("1. Base de datos");
-        System.out.println("2. Archivos .txt");
-        try{
-            opcion = sc.nextInt();
-        }catch (InputMismatchException e){
-            e.printStackTrace();
-        }
-        switch (opcion){
-            case 1 -> borrarBD();
-            case 2 -> borrarTXT();
-            default -> System.out.println("Opcion no valida");
-        }
-}
 }
