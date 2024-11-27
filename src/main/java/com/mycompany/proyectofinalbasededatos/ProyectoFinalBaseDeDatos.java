@@ -5,7 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Scanner;
 
-
 public class ProyectoFinalBaseDeDatos {
     private static final Scanner sc = new Scanner(System.in);
 

@@ -6,7 +6,6 @@ import java.sql.SQLException;
 import java.util.Scanner;
 import static com.mycompany.proyectofinalbasededatos.ConexionBD.connection;
 
-
 public class Asignatura  {
     private static final Scanner sc = new Scanner(System.in);
     private int codAsignatura;

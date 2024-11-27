@@ -9,7 +9,6 @@ import java.sql.Statement;
 import java.util.Scanner;
 import static com.mycompany.proyectofinalbasededatos.ConexionBD.connection;
 
-
 public class Alumno  {
     private static final Scanner sc = new Scanner(System.in);
     private static  String dni,nombre,fechaNac,direccion;

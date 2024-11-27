@@ -5,7 +5,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Scanner;
 
-
 public class Matricula  {
     private static final Scanner sc = new Scanner(System.in);
     private int codMatricula,codAsignatura;
