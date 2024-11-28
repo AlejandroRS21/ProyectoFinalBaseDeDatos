@@ -11,11 +11,11 @@ import static com.mycompany.proyectofinalbasededatos.ConexionBD.connection;
 
 public class Alumno  {
     private static final Scanner sc = new Scanner(System.in);
-    private static  String dni,nombre,fechaNac,direccion;
+    private static  String nombre,fechaNac,direccion;
 
     public static void introducirAlumno() {
         boolean datosValidos = true;
-        String query;
+        String query,dni;
         System.out.println("Introduce los datos del alumno:");
         System.out.println("DNI:");
         dni = sc.nextLine();
@@ -63,10 +63,10 @@ public class Alumno  {
             st.setString(1, dni);
             ResultSet rs = st.executeQuery();
 
-        if(rs.next() && rs.getInt(1) > 0){
-            System.out.println("El DNI ya esta registrado en la base de datos");
-            resultado = false;
-        }
+            if(rs.next() && rs.getInt(1) > 0){
+                System.out.println("El DNI ya esta registrado en la base de datos");
+                resultado = false;
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -80,14 +80,15 @@ public class Alumno  {
         boolean resultado = true;
         String query = "SELECT COUNT(*) FROM alumnos WHERE NombreCompleto = ?";
 
-        if(datosValidos){  //Comprueba que el nombre no este en blanco
-            if (nombre == null || nombre.trim().isEmpty()){
-                System.out.println("El nombre no puede estar vacio");
-                resultado = false;
-                datosValidos = false;
-            }
+        //Comprueba que el nombre no este en blanco
+        if (nombre == null || nombre.trim().isEmpty()){
+            System.out.println("El nombre no puede estar vacio");
+            resultado = false;
+            datosValidos = false;
         }
-        if(datosValidos){ //Comprueba que el nombre no exista ya en la base de datos
+
+        if(datosValidos){
+            //Comprueba que el nombre no exista ya en la base de datos
             try (PreparedStatement st = connection.prepareStatement(query)) {
                 st.setString(1, nombre);
                 ResultSet rs = st.executeQuery();
@@ -100,13 +101,12 @@ public class Alumno  {
             }
         }
         return resultado;
-        }
+    }
 
     public static String mostrarAlumno(String dni) {
         StringBuilder sb = new StringBuilder();
-        String consultaAlumno = "SELECT DNI, NombreCompleto, FechaNacimiento, Direccion " +
-                "FROM Alumnos WHERE TRIM(UPPER(DNI)) = ?";
-        try (PreparedStatement stmtAlumno = connection.prepareStatement(consultaAlumno);) {
+        String consultaAlumno = "SELECT DNI, NombreCompleto, FechaNacimiento, Direccion FROM Alumnos WHERE TRIM(UPPER(DNI)) = ?";
+        try (PreparedStatement stmtAlumno = connection.prepareStatement(consultaAlumno)) {
             stmtAlumno.setString(1, dni);
             try (ResultSet rsAlumno = stmtAlumno.executeQuery()) {
                 if (rsAlumno.next()) {
@@ -162,9 +162,7 @@ public class Alumno  {
 
     private static String obtenerAsignaturasAlumno(String dni) {
         StringBuilder asignaturas = new StringBuilder();
-        String consultaAsignaturas = "SELECT a.NombreAsignatura FROM matriculas m " +
-                "JOIN asignaturas a ON m.CodigoAsignatura = a.CodigoAsignatura " +
-                "WHERE m.DNI = ?";
+        String consultaAsignaturas = "SELECT a.NombreAsignatura FROM matriculas m JOIN asignaturas a ON m.CodigoAsignatura = a.CodigoAsignatura WHERE m.DNI = ?";
         try (PreparedStatement stmt = ConexionBD.connection.prepareStatement(consultaAsignaturas)) {
             stmt.setString(1, dni);
             try (ResultSet rs = stmt.executeQuery()) {
