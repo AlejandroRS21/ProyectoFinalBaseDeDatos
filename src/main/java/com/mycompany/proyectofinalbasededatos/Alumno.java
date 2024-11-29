@@ -58,7 +58,6 @@ public class Alumno  {
     private static boolean comprobarDNI(String dni){
         boolean resultado = true;
         String query = "SELECT COUNT(*) FROM alumnos WHERE DNI = ?";
-
         try (PreparedStatement st = connection.prepareStatement(query)) {
             st.setString(1, dni);
             ResultSet rs = st.executeQuery();
@@ -67,7 +66,6 @@ public class Alumno  {
                 System.out.println("El DNI ya esta registrado en la base de datos");
                 resultado = false;
             }
-
         } catch (Exception e) {
             e.printStackTrace();
             resultado = false;
@@ -79,14 +77,12 @@ public class Alumno  {
         boolean datosValidos = true;
         boolean resultado = true;
         String query = "SELECT COUNT(*) FROM alumnos WHERE NombreCompleto = ?";
-
         //Comprueba que el nombre no este en blanco
         if (nombre == null || nombre.trim().isEmpty()){
             System.out.println("El nombre no puede estar vacio");
             resultado = false;
             datosValidos = false;
         }
-
         if(datosValidos){
             //Comprueba que el nombre no exista ya en la base de datos
             try (PreparedStatement st = connection.prepareStatement(query)) {
@@ -110,13 +106,10 @@ public class Alumno  {
             stmtAlumno.setString(1, dni);
             try (ResultSet rsAlumno = stmtAlumno.executeQuery()) {
                 if (rsAlumno.next()) {
-
                     String id = rsAlumno.getString("DNI");
                     String nombre = rsAlumno.getString("NombreCompleto");
                     String fechaNac = rsAlumno.getString("FechaNacimiento");
                     String direccion = rsAlumno.getString("Direccion");
-
-
                     sb.append("Datos del Alumno:\n")
                             .append("DNI: ").append(id).append("\n")
                             .append("Nombre: ").append(nombre).append("\n")
@@ -124,7 +117,6 @@ public class Alumno  {
                             .append("Dirección: ").append(direccion).append("\n");
                 } else {
                     sb.append("No se encontró un alumno con el DNI: ").append(dni);
-                    return sb.toString();
                 }
             }
         } catch (SQLException e) {
