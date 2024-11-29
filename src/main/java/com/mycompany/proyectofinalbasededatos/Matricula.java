@@ -70,6 +70,7 @@ public class Matricula  {
 
     private static boolean alumnoExiste(String dni) throws SQLException {
         String query = "SELECT COUNT(*) FROM alumnos WHERE DNI = ?";
+        boolean existe = false;
         try (PreparedStatement stmt = ConexionBD.connection.prepareStatement(query)) {
             stmt.setString(1, dni);
             try (ResultSet rs = stmt.executeQuery()) {
@@ -78,11 +79,12 @@ public class Matricula  {
                 }
             }
         }
-        return false;
+        return existe;
     }
 
     private static boolean asignaturaExiste(int codAsignatura) throws SQLException {
         String query = "SELECT COUNT(*) FROM asignaturas WHERE CodigoAsignatura = ?";
+        boolean existe = false;
         try (PreparedStatement stmt = ConexionBD.connection.prepareStatement(query)) {
             stmt.setInt(1, codAsignatura);
             try (ResultSet rs = stmt.executeQuery()) {
@@ -91,11 +93,12 @@ public class Matricula  {
                 }
             }
         }
-        return false;
+        return existe;
     }
 
     private static boolean matriculaExiste(String dni, int codAsignatura) throws SQLException {
         String query = "SELECT COUNT(*) FROM matriculas WHERE DNI = ? AND CodigoAsignatura = ?";
+        boolean existe = false;
         try (PreparedStatement stmt = ConexionBD.connection.prepareStatement(query)) {
             stmt.setString(1, dni);
             stmt.setInt(2, codAsignatura);
@@ -105,7 +108,7 @@ public class Matricula  {
                 }
             }
         }
-        return false;
+        return existe;
     }
 
     private static void insertarMatricula(int codMatricula, String dni, int codAsignatura) throws SQLException {
