@@ -10,9 +10,7 @@ public class ProyectoFinalBaseDeDatos {
 
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
         int opcion;
-        String dni;
-        String datosAlumno;
-
+        String dni,datosAlumno;
         do {
             System.out.println("""
                     __________________________________________
@@ -58,12 +56,11 @@ public class ProyectoFinalBaseDeDatos {
     }
 
     public static void borrar() {
-        int opcion = sc.nextInt();
-
         System.out.println("¿Qué desea borrar?");
         System.out.println("1. Todos los archivos .txt");
         System.out.println("2. Vaciar la base de datos");
         System.out.print("Seleccione una: ");
+        int opcion = sc.nextInt();
         switch (opcion) {
             case 1 -> borrarArchivosTxt();
             case 2 -> vaciarBaseDeDatos();
@@ -74,7 +71,7 @@ public class ProyectoFinalBaseDeDatos {
     private static void borrarArchivosTxt() {
         File directorioActual = new File(".");
         File[] archivos = directorioActual.listFiles((_, name) -> name.endsWith(".txt"));
-        if (archivos != null) {
+        if (archivos != null && archivos.length > 0) {
             for (File archivo : archivos) {
                 if (archivo.delete()) {
                     System.out.println("Archivo eliminado: " + archivo.getName());
