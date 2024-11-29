@@ -24,14 +24,11 @@ public class ProyectoFinalBaseDeDatos {
                     7.Salir
                     ___________________________________________
                     """);
-
-
             while (!sc.hasNextInt()) {
                 System.out.println("Por favor, introduce un número válido:");
                 sc.next();
 
             }
-
             ConexionBD.conectar();
             opcion = sc.nextInt();
             sc.nextLine();

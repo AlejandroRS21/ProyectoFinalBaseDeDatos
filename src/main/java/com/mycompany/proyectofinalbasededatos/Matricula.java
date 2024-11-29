@@ -38,9 +38,11 @@ public class Matricula  {
     }
 
     public static void introducirMatricula() {
+        String dni;
+        int codMatricula;
         try {
             System.out.println("Introduce el DNI del alumno:");
-            String dni = sc.nextLine().trim();
+            dni = sc.nextLine().trim();
             if (!alumnoExiste(dni)) {
                 System.out.println("El alumno con DNI " + dni + " no existe.");
                 return;
@@ -59,7 +61,7 @@ public class Matricula  {
             }
 
             System.out.println("Introduce el código de matrícula:");
-            int codMatricula = Integer.parseInt(sc.nextLine().trim());
+            codMatricula = Integer.parseInt(sc.nextLine().trim());
             insertarMatricula(codMatricula, dni, codAsignatura);
         } catch (NumberFormatException e) {
             System.out.println("Error: Introduce un número válido.");
@@ -75,7 +77,7 @@ public class Matricula  {
             stmt.setString(1, dni);
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
-                    return rs.getInt(1) > 0;
+                    existe = rs.getInt(1) > 0;
                 }
             }
         }
@@ -89,7 +91,7 @@ public class Matricula  {
             stmt.setInt(1, codAsignatura);
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
-                    return rs.getInt(1) > 0;
+                    existe = rs.getInt(1) > 0;
                 }
             }
         }
@@ -98,13 +100,13 @@ public class Matricula  {
 
     private static boolean matriculaExiste(String dni, int codAsignatura) throws SQLException {
         String query = "SELECT COUNT(*) FROM matriculas WHERE DNI = ? AND CodigoAsignatura = ?";
-        boolean existe = false;
+        boolean existe=false;
         try (PreparedStatement stmt = ConexionBD.connection.prepareStatement(query)) {
             stmt.setString(1, dni);
             stmt.setInt(2, codAsignatura);
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
-                    return rs.getInt(1) > 0;
+                    existe = rs.getInt(1) > 0;
                 }
             }
         }
