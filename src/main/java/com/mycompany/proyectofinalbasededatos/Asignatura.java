@@ -29,8 +29,8 @@ public class Asignatura  {
     }
 
     public static void introducirAsignatura() {
-        String codAsignatura;
-        String nombreAsig = "";
+        String codAsignatura,
+                nombreAsig=null;
         boolean datosValidos = true;
 
         System.out.println("Introduce el código de asignatura:");
@@ -74,9 +74,10 @@ public class Asignatura  {
     private static boolean comprobarCodigoAsignaturaExistente(String codAsignatura) {
         boolean resultado = false;
         String query = "SELECT COUNT(*) FROM Asignaturas WHERE CodigoAsignatura = ?";
+        ResultSet rs;
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setString(1, codAsignatura);
-            ResultSet rs = stmt.executeQuery();
+             rs = stmt.executeQuery();
             if (rs.next() && rs.getInt(1) > 0) {
                 resultado = true;
             }

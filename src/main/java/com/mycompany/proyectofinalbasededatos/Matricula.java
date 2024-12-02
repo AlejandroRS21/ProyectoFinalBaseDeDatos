@@ -38,31 +38,30 @@ public class Matricula  {
     }
 
     public static void introducirMatricula() {
-        String dni;
-        int codMatricula;
+        String dni,mensaje = null;
+        int codMatricula,
+                codAsignatura;
         try {
             System.out.println("Introduce el DNI del alumno:");
             dni = sc.nextLine().trim();
             if (!alumnoExiste(dni)) {
-                System.out.println("El alumno con DNI " + dni + " no existe.");
-                return;
+                mensaje = "El alumno con DNI " + dni + " no existe.";
+            } else{
+                System.out.println("Introduce el código de asignatura:");
+                codAsignatura = Integer.parseInt(sc.nextLine().trim());
+                if (!asignaturaExiste(codAsignatura)) {
+                    mensaje = "La asignatura con código " + codAsignatura + " no existe.";
+                } else if (matriculaExiste(dni, codAsignatura)) {
+                    mensaje = "El alumno con DNI " + dni + " ya está matriculado en la asignatura " + codAsignatura + ".";
+                } else {
+                    System.out.println("Introduce el código de matrícula:");
+                    codMatricula = Integer.parseInt(sc.nextLine().trim());
+                    insertarMatricula(codMatricula, dni, codAsignatura);
+                }
             }
-
-            System.out.println("Introduce el código de asignatura:");
-            int codAsignatura = Integer.parseInt(sc.nextLine().trim());
-            if (!asignaturaExiste(codAsignatura)) {
-                System.out.println("La asignatura con código " + codAsignatura + " no existe.");
-                return;
+            if (mensaje != null){
+                System.out.println(mensaje);
             }
-
-            if (matriculaExiste(dni, codAsignatura)) {
-                System.out.println("El alumno con DNI " + dni + " ya está matriculado en la asignatura " + codAsignatura + ".");
-                return;
-            }
-
-            System.out.println("Introduce el código de matrícula:");
-            codMatricula = Integer.parseInt(sc.nextLine().trim());
-            insertarMatricula(codMatricula, dni, codAsignatura);
         } catch (NumberFormatException e) {
             System.out.println("Error: Introduce un número válido.");
         } catch (SQLException e) {
@@ -115,11 +114,12 @@ public class Matricula  {
 
     private static void insertarMatricula(int codMatricula, String dni, int codAsignatura) throws SQLException {
         String query = "INSERT INTO matriculas (CodigoMatricula, DNI, CodigoAsignatura) VALUES (?, ?, ?)";
+        int rowsInserted;
         try (PreparedStatement stmt = ConexionBD.connection.prepareStatement(query)) {
             stmt.setInt(1, codMatricula);
             stmt.setString(2, dni);
             stmt.setInt(3, codAsignatura);
-            int rowsInserted = stmt.executeUpdate();
+            rowsInserted = stmt.executeUpdate();
             if (rowsInserted > 0) {
                 System.out.println("Matrícula registrada con éxito.");
             } else {

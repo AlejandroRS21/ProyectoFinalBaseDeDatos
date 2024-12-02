@@ -11,7 +11,9 @@ import static com.mycompany.proyectofinalbasededatos.ConexionBD.connection;
 
 public class Alumno  {
     private static final Scanner sc = new Scanner(System.in);
-    private static  String nombre,fechaNac,direccion;
+    private static String nombre,
+                                fechaNac,
+                                direccion;
 
     public static void introducirAlumno() {
         boolean datosValidos = true;
@@ -57,11 +59,11 @@ public class Alumno  {
 
     private static boolean comprobarDNI(String dni){
         boolean resultado = true;
+        ResultSet rs;
         String query = "SELECT COUNT(*) FROM alumnos WHERE DNI = ?";
         try (PreparedStatement st = connection.prepareStatement(query)) {
             st.setString(1, dni);
-            ResultSet rs = st.executeQuery();
-
+            rs = st.executeQuery();
             if(rs.next() && rs.getInt(1) > 0){
                 System.out.println("El DNI ya esta registrado en la base de datos");
                 resultado = false;
@@ -74,20 +76,22 @@ public class Alumno  {
     }
 
     private static boolean comprobarNombre(String nombre){
-        boolean datosValidos = true;
-        boolean resultado = true;
-        String query = "SELECT COUNT(*) FROM alumnos WHERE NombreCompleto = ?";
+        boolean datosValidos = true,
+                resultado = true;
+        String query;
+        ResultSet rs;
         //Comprueba que el nombre no este en blanco
         if (nombre == null || nombre.trim().isEmpty()){
             System.out.println("El nombre no puede estar vacio");
             resultado = false;
             datosValidos = false;
         }
+        //Comprueba que el nombre no exista ya en la base de datos
         if(datosValidos){
-            //Comprueba que el nombre no exista ya en la base de datos
+            query = "SELECT COUNT(*) FROM alumnos WHERE NombreCompleto = ?";
             try (PreparedStatement st = connection.prepareStatement(query)) {
                 st.setString(1, nombre);
-                ResultSet rs = st.executeQuery();
+                rs = st.executeQuery();
                 if(rs.next() && rs.getInt(1) > 0){
                     System.out.println("El nombre ya existe en la base de datos");
                     resultado = false;
@@ -100,16 +104,20 @@ public class Alumno  {
     }
 
     public static String mostrarAlumno(String dni) {
+        String id,
+                nombre,
+                fechaNac,
+                direccion,
+                consultaAlumno = "SELECT DNI, NombreCompleto, FechaNacimiento, Direccion FROM Alumnos WHERE TRIM(UPPER(DNI)) = ?";;
         StringBuilder sb = new StringBuilder();
-        String consultaAlumno = "SELECT DNI, NombreCompleto, FechaNacimiento, Direccion FROM Alumnos WHERE TRIM(UPPER(DNI)) = ?";
         try (PreparedStatement stmtAlumno = connection.prepareStatement(consultaAlumno)) {
             stmtAlumno.setString(1, dni);
             try (ResultSet rsAlumno = stmtAlumno.executeQuery()) {
                 if (rsAlumno.next()) {
-                    String id = rsAlumno.getString("DNI");
-                    String nombre = rsAlumno.getString("NombreCompleto");
-                    String fechaNac = rsAlumno.getString("FechaNacimiento");
-                    String direccion = rsAlumno.getString("Direccion");
+                    id = rsAlumno.getString("DNI");
+                    nombre = rsAlumno.getString("NombreCompleto");
+                    fechaNac = rsAlumno.getString("FechaNacimiento");
+                    direccion = rsAlumno.getString("Direccion");
                     sb.append("Datos del Alumno:\n")
                             .append("DNI: ").append(id).append("\n")
                             .append("Nombre: ").append(nombre).append("\n")
@@ -126,10 +134,12 @@ public class Alumno  {
     }
 
     public static void volcarDatosAlumnos() {
-        String dni, nombre, nombreArchivo, datosAlumno;
+        String dni,
+                nombre,
+                nombreArchivo,
+                datosAlumno,
+                consultaAlumnos = "SELECT DNI, NombreCompleto FROM Alumnos";
         File f;
-        String consultaAlumnos = "SELECT DNI, NombreCompleto FROM Alumnos";
-
         try (Statement stmt = ConexionBD.connection.createStatement();
              ResultSet rs = stmt.executeQuery(consultaAlumnos)) {
             while (rs.next()) {

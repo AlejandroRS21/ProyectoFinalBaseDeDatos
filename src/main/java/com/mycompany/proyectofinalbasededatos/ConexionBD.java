@@ -5,9 +5,9 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class ConexionBD {
-    private static final String URL = "jdbc:mariadb://localhost:3306/gestionacademica";
-    private static final String USER = "root";
-    private static final String PASSWORD = "admin";
+    private static final String URL = "jdbc:mariadb://localhost:3306/gestionacademica",
+                                USER = "root",
+                                PASSWORD = "admin";
     public static Connection connection;
 
     public static void conectar() throws ClassNotFoundException, SQLException {

@@ -7,10 +7,10 @@ import java.util.Scanner;
 
 public class ProyectoFinalBaseDeDatos {
     private static final Scanner sc = new Scanner(System.in);
-
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
         int opcion;
-        String dni,datosAlumno;
+        String dni,
+                datosAlumno;
         do {
             System.out.println("""
                     __________________________________________
@@ -53,11 +53,11 @@ public class ProyectoFinalBaseDeDatos {
     }
 
     public static void borrar() {
+        int opcion = sc.nextInt();
         System.out.println("¿Qué desea borrar?");
         System.out.println("1. Todos los archivos .txt");
         System.out.println("2. Vaciar la base de datos");
         System.out.print("Seleccione una: ");
-        int opcion = sc.nextInt();
         switch (opcion) {
             case 1 -> borrarArchivosTxt();
             case 2 -> vaciarBaseDeDatos();
@@ -83,9 +83,8 @@ public class ProyectoFinalBaseDeDatos {
 
     private static void vaciarBaseDeDatos() {
         String[] tablas = {"matriculas", "alumnos", "asignaturas"};
-        String desactivarRestricciones = "SET FOREIGN_KEY_CHECKS = 0";
-        String activarRestricciones = "SET FOREIGN_KEY_CHECKS = 1";
-
+        String desactivarRestricciones = "SET FOREIGN_KEY_CHECKS = 0",
+                activarRestricciones = "SET FOREIGN_KEY_CHECKS = 1";
         try {
             try (PreparedStatement stmtDesactivar = ConexionBD.connection.prepareStatement(desactivarRestricciones)) {
                 stmtDesactivar.executeUpdate();
