@@ -53,11 +53,11 @@ public class ProyectoFinalBaseDeDatos {
     }
 
     public static void borrar() {
-        int opcion = sc.nextInt();
         System.out.println("¿Qué desea borrar?");
         System.out.println("1. Todos los archivos .txt");
         System.out.println("2. Vaciar la base de datos");
         System.out.print("Seleccione una: ");
+        int opcion = sc.nextInt();
         switch (opcion) {
             case 1 -> borrarArchivosTxt();
             case 2 -> vaciarBaseDeDatos();

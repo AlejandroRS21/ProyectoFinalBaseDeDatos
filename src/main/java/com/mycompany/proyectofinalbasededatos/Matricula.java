@@ -40,7 +40,7 @@ public class Matricula  {
     public static void introducirMatricula() {
         String dni,mensaje = null;
         int codMatricula,
-                codAsignatura;
+            codAsignatura;
         try {
             System.out.println("Introduce el DNI del alumno:");
             dni = sc.nextLine().trim();
